@@ -1,0 +1,14 @@
+maintainers:
+#  - github: farseerfc
+#  - github: yan12125
+#    email: f2q9sf79f9owdg2o@chyen.cc
+  - github: kiri2002
+    email: kiri@vern.cc
+
+post_build: git_pkgbuild_commit
+
+update_on:
+  - source: manual
+    manual: 20220621
+  - source: manual
+    manual: 1

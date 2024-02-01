@@ -1,0 +1,72 @@
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+# Contributor: Pierre Schmitz <pierre@archlinux.de>
+
+_pkgname=devtools
+pkgname=devtools-archlinuxcn
+epoch=1
+pkgver=1.0.4
+pkgrel=4
+# curl https://api.github.com/repos/archlinuxcn/devtools/git/ref/tags/$pkgver-archlinuxcn1 | jq -r .object.sha
+_tag=ac4d056aa8254c8487ed93834a6d7e7b1e63e153
+_upstream_pkgrel=1
+pkgdesc='Tools for Arch Linux package maintainers, archlinuxcn fork'
+arch=('any')
+license=('GPL')
+url='https://gitlab.archlinux.org/archlinux/devtools'
+depends=(
+  arch-install-scripts
+  awk
+  bash
+  binutils
+  coreutils
+  diffutils
+  findutils
+  grep
+  jq
+  openssh
+  parallel
+  rsync
+  sed
+  util-linux
+
+  breezy
+  git
+  mercurial
+  subversion
+)
+makedepends=(
+  asciidoc
+  shellcheck
+)
+optdepends=('btrfs-progs: btrfs support')
+provides=("devtools=$pkgver-$pkgrel")
+conflicts=("devtools")
+source=("$pkgname::git+https://github.com/archlinuxcn/devtools.git?signed#tag=$_tag"
+        "devtools-loong64-1.0.4.patch")
+b2sums=('SKIP'
+        'SKIP')
+validpgpkeys=(
+  'E62545315B012B69C8C94A1D56EC201BFC794362'  # https://github.com/yan12125
+)
+
+pkgver() {
+  cd ${pkgname}
+  git describe --tags | sed -E 's/-archlinuxcn[0-9]+//'
+}
+
+prepare() {
+  cd ${pkgname}
+  patch -p1 -i $srcdir/devtools-loong64-1.0.4.patch
+}
+
+build() {
+  cd ${pkgname}
+  make BUILDTOOLVER="${epoch}:${pkgver}-${_upstream_pkgrel}-${arch}" PREFIX=/usr
+}
+
+package() {
+  cd ${pkgname}
+  make PREFIX=/usr DESTDIR="${pkgdir}" install
+}
+
+# vim: ts=2 sw=2 et:

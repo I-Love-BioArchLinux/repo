@@ -1,0 +1,21 @@
+maintainers:
+#  - github: yan12125
+#    email: f2q9sf79f9owdg2o@chyen.cc
+  - github: kiri2002
+    email: kiri@vern.cc
+
+build_prefix: extra-loong64
+
+repo_depends:
+  - pid_children-git
+
+#pre_build: aur_pre_build
+
+#post_build: aur_post_build
+
+update_on:
+  - source: github
+    github: archlinuxcn/lilac
+  - alias: python
+  - source: aur
+    aur: lilac-git
